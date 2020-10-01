@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+var normal = preload("res://Animations/normal-animation.tres")
+
 export var GRAVITY = 1000
 export var SPEED = 200
 export var JUMP_FORCE = -200
@@ -19,6 +21,9 @@ enum {
 }
 
 var state = IDLE
+
+func _ready():
+	animation.frames = normal
 
 func _physics_process(delta):
 	var walk_right = Input.get_action_strength("ui_right")
@@ -48,6 +53,7 @@ func _physics_process(delta):
 				state = JUMP
 		
 		JUMP:
+			animation.play("jump")
 			move(move)
 			if is_on_floor():
 				velocity.y = JUMP_FORCE
@@ -57,16 +63,19 @@ func _physics_process(delta):
 				state = FALL
 		
 		FALL:
+			animation.play("fall")
 			if is_on_floor():
 				state = LAND
 			else:
 				move(move)
 			
 		LAND:
-			if velocity.x != 0:
-				state = RUN
-			else:
-				state = IDLE
+			animation.play("land")
+			move(move)
+			if move == 0:
+				velocity.x = 0
+			if jump:
+				state = JUMP
 	
 	if facing_right and walk_left and not walk_right:
 		flip()
@@ -84,3 +93,11 @@ func move(move):
 		velocity.x = SPEED
 	elif move < 0:
 		velocity.x = -SPEED
+
+
+func _on_AnimatedSprite_animation_finished():
+	if animation.animation == "land":
+		if velocity.x != 0:
+			state = RUN
+		else:
+			state = IDLE
