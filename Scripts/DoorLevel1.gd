@@ -9,7 +9,8 @@ func _process(_delta):
 
 
 func _on_Area2D_body_entered(_body):
-	level_controller.on_door = true
+	if animation.animation == "open":
+		level_controller.on_door = true
 
 
 func _on_Area2D_body_exited(_body):

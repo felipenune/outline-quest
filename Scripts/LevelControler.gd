@@ -9,6 +9,10 @@ export var current_level = 1
 
 var on_door = false
 
+func _ready():
+	on_door = false
+	current_keys = 0
+
 func _process(_delta):
 	if on_door:
 		if Input.is_action_just_pressed("ui_up"):
