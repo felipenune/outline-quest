@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 var normal = preload("res://Animations/normal-animation.tres")
+onready var death_particles = preload("res://Scenes/Particles/PlayerDeathParticles.tscn")
 
 export var GRAVITY = 1000
 export var SPEED = 200
@@ -10,6 +11,9 @@ export var JUMP_TIME = 0.1
 var velocity = Vector2.ZERO
 
 var facing_right = true
+var can_move = false
+
+onready var level_controller = get_parent().get_node("LevelController")
 
 onready var animation = $AnimatedSprite
 onready var jump_timer = $JumpTimer
@@ -19,7 +23,7 @@ enum {
 	RUN,
 	JUMP,
 	FALL,
-	LAND
+	LAND,
 }
 
 var state = IDLE
@@ -42,43 +46,48 @@ func _physics_process(delta):
 		IDLE:
 			animation.play("idle")
 			velocity.x = 0
-			if move != 0:
-				state = RUN
-			if jump_timer.time_left > 0 and is_on_floor():
-				state = JUMP
+			if can_move:
+				if move != 0:
+					state = RUN
+				if jump_timer.time_left > 0 and is_on_floor():
+					state = JUMP
 		
 		RUN:
 			animation.play("run")
-			move(move)
-			if move == 0:
-				state = IDLE
-			if jump_timer.time_left > 0 and is_on_floor():
-				state = JUMP
+			if can_move:
+				move(move)
+				if move == 0:
+					state = IDLE
+				if jump_timer.time_left > 0 and is_on_floor():
+					state = JUMP
 		
 		JUMP:
 			animation.play("jump")
-			move(move)
-			if is_on_floor():
-				velocity.y = JUMP_FORCE
-			if jump_stop and velocity.y < 0:
-				velocity.y *= 0.5
-			if velocity.y > 0:
-				state = FALL
+			if can_move:
+				move(move)
+				if is_on_floor():
+					velocity.y = JUMP_FORCE
+				if jump_stop and velocity.y < 0:
+					velocity.y *= 0.5
+				if velocity.y > 0:
+					state = FALL
 		
 		FALL:
 			animation.play("fall")
-			if is_on_floor():
-				state = LAND
-			else:
-				move(move)
+			if can_move:
+				if is_on_floor():
+					state = LAND
+				else:
+					move(move)
 			
 		LAND:
 			animation.play("land")
-			move(move)
-			if move == 0:
-				velocity.x = 0
-			if jump_timer.time_left > 0 and is_on_floor():
-				state = JUMP
+			if can_move:
+				move(move)
+				if move == 0:
+					velocity.x = 0
+				if jump_timer.time_left > 0 and is_on_floor():
+					state = JUMP
 	
 	if facing_right and walk_left and not walk_right:
 		flip()
@@ -108,3 +117,15 @@ func _on_AnimatedSprite_animation_finished():
 			state = RUN
 		else:
 			state = IDLE
+
+func death():
+	var particles = death_particles.instance()
+	get_parent().add_child(particles)
+	particles.global_position = global_position
+	particles.emitting = true
+	queue_free()
+	level_controller.start_death_timer(1)
+
+
+func _on_MoveTimer_timeout():
+	can_move = true

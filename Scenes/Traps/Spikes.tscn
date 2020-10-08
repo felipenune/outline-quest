@@ -13,5 +13,5 @@ texture = ExtResource( 1 )
 centered = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-polygon = PoolVector2Array( 1.0341, 15.5844, 3.66191, 2.97092, 7.76128, 15.8997, 11.8606, 2.97092, 14.8038, 15.6895 )
+polygon = PoolVector2Array( 1.66476, 15.6894, 3.66191, 2.97092, 7.76128, 15.8997, 12.0708, 3.07599, 14.3833, 15.5843, 7.86637, 15.6894 )
 [connection signal="body_entered" from="." to="." method="_on_Spikes_body_entered"]

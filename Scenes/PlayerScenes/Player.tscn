@@ -10,8 +10,9 @@ extents = Vector2( 3.95493, 6.97907 )
 z_index = 1
 collision_mask = 2
 script = ExtResource( 2 )
+GRAVITY = 1100
 SPEED = 80
-JUMP_FORCE = -250
+JUMP_FORCE = -300
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -8 )
@@ -26,4 +27,9 @@ shape = SubResource( 1 )
 
 [node name="JumpTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="MoveTimer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
 [connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
+[connection signal="timeout" from="MoveTimer" to="." method="_on_MoveTimer_timeout"]

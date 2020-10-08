@@ -4,3 +4,7 @@
 
 [node name="LevelController" type="Node"]
 script = ExtResource( 1 )
+
+[node name="DeathTimer" type="Timer" parent="."]
+one_shot = true
+[connection signal="timeout" from="DeathTimer" to="." method="_on_DeathTimer_timeout"]
