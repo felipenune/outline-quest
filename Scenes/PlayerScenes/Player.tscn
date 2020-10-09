@@ -10,9 +10,8 @@ extents = Vector2( 3.95493, 6.97907 )
 z_index = 1
 collision_mask = 2
 script = ExtResource( 2 )
-GRAVITY = 1100
 SPEED = 80
-JUMP_FORCE = -300
+JUMP_FORCE = -270
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -8 )

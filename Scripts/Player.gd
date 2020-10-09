@@ -105,6 +105,9 @@ func move(move):
 		velocity.x = SPEED
 	elif move < 0:
 		velocity.x = -SPEED
+	else:
+		var vel = Vector2(0, velocity.y)
+		velocity = velocity.move_toward(vel, SPEED)
 
 func jump(duration):
 	var jump = Input.is_action_just_pressed("ui_jump")

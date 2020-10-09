@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Sprites/spikes.png" type="Texture" id=1]
+[ext_resource path="res://Sprites/Traps/spikes.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/Spikes.gd" type="Script" id=2]
 
 [node name="Spikes" type="Area2D"]
@@ -13,5 +13,5 @@ texture = ExtResource( 1 )
 centered = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-polygon = PoolVector2Array( 1.66476, 15.6894, 3.66191, 2.97092, 7.76128, 15.8997, 12.0708, 3.07599, 14.3833, 15.5843, 7.86637, 15.6894 )
+polygon = PoolVector2Array( 1, 15.5, 2, 8, 4, 3, 6, 8, 7, 15.5 )
 [connection signal="body_entered" from="." to="." method="_on_Spikes_body_entered"]
