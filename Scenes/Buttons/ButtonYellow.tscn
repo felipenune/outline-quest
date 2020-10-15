@@ -21,6 +21,7 @@ animations = [ {
 extents = Vector2( 6.03507, 1.58796 )
 
 [node name="ButtonYellow" type="StaticBody2D"]
+z_as_relative = false
 collision_layer = 2
 script = ExtResource( 3 )
 
@@ -32,7 +33,7 @@ centered = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 position = Vector2( 0, 1 )
-polygon = PoolVector2Array( -0.0880775, 15.3079, 3.86528, 11.967, 13.0527, 12.0227, 15.9481, 15.4192 )
+polygon = PoolVector2Array( 0, 15, 3, 11.5, 13, 11.5, 16, 15 )
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 2

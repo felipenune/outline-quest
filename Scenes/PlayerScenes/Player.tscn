@@ -12,6 +12,7 @@ collision_mask = 2
 script = ExtResource( 2 )
 SPEED = 80
 JUMP_FORCE = -270
+JUMP_TIME = 0.2
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -8 )

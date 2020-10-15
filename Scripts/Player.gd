@@ -7,6 +7,10 @@ export var GRAVITY = 1000
 export var SPEED = 200
 export var JUMP_FORCE = -200
 export var JUMP_TIME = 0.1
+export var max_jumps = 1
+
+var jumps_left = max_jumps
+var is_jumping = false
 
 var velocity = Vector2.ZERO
 
@@ -28,15 +32,19 @@ enum {
 
 var state = IDLE
 
+var flor
+
 func _ready():
 	animation.frames = normal
 
 func _physics_process(delta):
 	var walk_right = Input.get_action_strength("ui_right")
 	var walk_left = Input.get_action_strength("ui_left")
-	var jump_stop = Input.is_action_just_released("ui_jump")
+	var jump_stop = !Input.is_action_pressed("ui_jump")
 	
 	var move = walk_right - walk_left
+	
+	flor = is_on_floor()
 	
 	velocity.y += delta * GRAVITY
 	
@@ -49,7 +57,7 @@ func _physics_process(delta):
 			if can_move:
 				if move != 0:
 					state = RUN
-				if jump_timer.time_left > 0 and is_on_floor():
+				if jump_timer.time_left > 0 and jumps_left > 0:
 					state = JUMP
 		
 		RUN:
@@ -58,19 +66,26 @@ func _physics_process(delta):
 				move(move)
 				if move == 0:
 					state = IDLE
-				if jump_timer.time_left > 0 and is_on_floor():
+				if jump_timer.time_left > 0 and jumps_left > 0:
 					state = JUMP
 		
 		JUMP:
 			animation.play("jump")
 			if can_move:
 				move(move)
-				if is_on_floor():
+				if Input.is_action_pressed("ui_jump") and !is_jumping:
+					jumps_left -= 1
+					is_jumping = true
 					velocity.y = JUMP_FORCE
 				if jump_stop and velocity.y < 0:
+					is_jumping = false
 					velocity.y *= 0.5
 				if velocity.y > 0:
+					is_jumping = false
 					state = FALL
+				if jump_timer.time_left > 0 and jumps_left > 0:
+					state = JUMP
+					
 		
 		FALL:
 			animation.play("fall")
@@ -79,9 +94,13 @@ func _physics_process(delta):
 					state = LAND
 				else:
 					move(move)
+				if jump_timer.time_left > 0 and jumps_left > 0:
+					state = JUMP
 			
 		LAND:
 			animation.play("land")
+			is_jumping = false
+			jumps_left = max_jumps
 			if can_move:
 				move(move)
 				if move == 0:
@@ -113,14 +132,7 @@ func jump(duration):
 	var jump = Input.is_action_just_pressed("ui_jump")
 	if jump:
 		jump_timer.start(duration)
-
-func _on_AnimatedSprite_animation_finished():
-	if animation.animation == "land":
-		if velocity.x != 0:
-			state = RUN
-		else:
-			state = IDLE
-
+		
 func death():
 	var particles = death_particles.instance()
 	get_parent().add_child(particles)
@@ -129,6 +141,17 @@ func death():
 	queue_free()
 	level_controller.start_death_timer(1)
 
+func power_up(item_name):
+	if item_name == "DOUBLE_JUMP":
+		max_jumps = 2
+		jumps_left = max_jumps
+
+func _on_AnimatedSprite_animation_finished():
+	if animation.animation == "land":
+		if velocity.x != 0:
+			state = RUN
+		else:
+			state = IDLE
 
 func _on_MoveTimer_timeout():
 	can_move = true
