@@ -66,6 +66,9 @@ func _physics_process(delta):
 				move(move)
 				if move == 0:
 					state = IDLE
+				if !is_on_floor():
+					jumps_left = 0
+					state = FALL
 				if jump_timer.time_left > 0 and jumps_left > 0:
 					state = JUMP
 		
@@ -74,18 +77,15 @@ func _physics_process(delta):
 			if can_move:
 				move(move)
 				if Input.is_action_pressed("ui_jump") and !is_jumping:
-					jumps_left -= 1
 					is_jumping = true
+					jumps_left -= 1
 					velocity.y = JUMP_FORCE
 				if jump_stop and velocity.y < 0:
-					is_jumping = false
 					velocity.y *= 0.5
 				if velocity.y > 0:
-					is_jumping = false
 					state = FALL
 				if jump_timer.time_left > 0 and jumps_left > 0:
 					state = JUMP
-					
 		
 		FALL:
 			animation.play("fall")
@@ -95,6 +95,7 @@ func _physics_process(delta):
 				else:
 					move(move)
 				if jump_timer.time_left > 0 and jumps_left > 0:
+					is_jumping = false
 					state = JUMP
 			
 		LAND:
@@ -129,8 +130,7 @@ func move(move):
 		velocity = velocity.move_toward(vel, SPEED)
 
 func jump(duration):
-	var jump = Input.is_action_just_pressed("ui_jump")
-	if jump:
+	if Input.is_action_just_pressed("ui_jump"):
 		jump_timer.start(duration)
 		
 func death():

@@ -1,4 +1,4 @@
-extends Sprite
+extends Node2D
 
 export var item_name = "DOUBLE_JUMP"
 
