@@ -144,7 +144,7 @@ func death():
 func power_up(item_name):
 	if item_name == "DOUBLE_JUMP":
 		max_jumps = 2
-		jumps_left = max_jumps
+		jumps_left += 1
 
 func _on_AnimatedSprite_animation_finished():
 	if animation.animation == "land":
