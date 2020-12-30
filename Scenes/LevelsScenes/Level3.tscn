@@ -31,27 +31,27 @@ position = Vector2( 208, 144 )
 [node name="DoorLevel1" parent="." instance=ExtResource( 4 )]
 position = Vector2( 288, 112 )
 
-[node name="Spikes2" type="Node2D" parent="."]
+[node name="Spikes" type="Node2D" parent="."]
 
-[node name="Spikes" parent="Spikes2" instance=ExtResource( 6 )]
+[node name="Spikes" parent="Spikes" instance=ExtResource( 6 )]
 position = Vector2( 96, 144 )
 
-[node name="Spikes2" parent="Spikes2" instance=ExtResource( 6 )]
+[node name="Spikes2" parent="Spikes" instance=ExtResource( 6 )]
 position = Vector2( 104, 144 )
 
-[node name="Spikes4" parent="Spikes2" instance=ExtResource( 6 )]
+[node name="Spikes4" parent="Spikes" instance=ExtResource( 6 )]
 position = Vector2( 112, 144 )
 
-[node name="Spikes5" parent="Spikes2" instance=ExtResource( 6 )]
+[node name="Spikes5" parent="Spikes" instance=ExtResource( 6 )]
 position = Vector2( 176, 144 )
 
-[node name="Spikes6" parent="Spikes2" instance=ExtResource( 6 )]
+[node name="Spikes6" parent="Spikes" instance=ExtResource( 6 )]
 position = Vector2( 168, 144 )
 
-[node name="Spikes11" parent="Spikes2" instance=ExtResource( 6 )]
+[node name="Spikes11" parent="Spikes" instance=ExtResource( 6 )]
 position = Vector2( 184, 144 )
 
-[node name="Spikes12" parent="Spikes2" instance=ExtResource( 6 )]
+[node name="Spikes12" parent="Spikes" instance=ExtResource( 6 )]
 position = Vector2( 264, 48 )
 
 [node name="Pencils" type="Node2D" parent="."]
