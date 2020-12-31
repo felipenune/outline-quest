@@ -1,5 +1,8 @@
 extends Position2D
 
+export var y_amount = 360
+
+export var y_offset = 190
 
 export var left_limit = 320
 export var right_limit = 960
@@ -21,6 +24,17 @@ func _process(_delta):
 			move_x()
 		elif position.x > player.position.x and position.x > left_limit: 
 			move_x()
+			
+		if player.position.y > position.y + y_offset:
+			move_y_up()
+		elif player.position.y < position.y - y_offset:
+			move_y_down()
 
 func move_x():
-	position.x = lerp(position.x, player.position.x, 0.7)
+	position.x = lerp(position.x, player.position.x, 0.1)
+
+func move_y_up():
+	position.y = position.y + y_amount
+	
+func move_y_down():
+	position.y = position.y - y_amount
