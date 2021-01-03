@@ -12,6 +12,13 @@ export var max_jumps = 1
 var jumps_left = max_jumps
 var is_jumping = false
 
+var unlock_dash = false
+var speed_dash_side = 400
+var speed_dash_up = 300
+var dash_time = 0.2
+var can_dash = true
+var is_dashing = false
+
 var velocity = Vector2.ZERO
 
 var facing_right = true
@@ -21,6 +28,7 @@ onready var level_controller = get_parent().get_node("LevelController")
 
 onready var animation = $AnimatedSprite
 onready var jump_timer = $JumpTimer
+onready var dash_timer = $DashTimer
 
 enum {
 	IDLE,
@@ -28,11 +36,10 @@ enum {
 	JUMP,
 	FALL,
 	LAND,
+	DASH,
 }
 
 var state = IDLE
-
-var flor
 
 func _ready():
 	animation.frames = normal
@@ -44,11 +51,15 @@ func _physics_process(delta):
 	
 	var move = walk_right - walk_left
 	
-	flor = is_on_floor()
-	
-	velocity.y += delta * GRAVITY
-	
-	jump(JUMP_TIME)
+	if not is_dashing:
+		velocity.y += delta * GRAVITY
+		jump(JUMP_TIME)
+		
+	if is_on_floor():
+		is_jumping = false
+		jumps_left = max_jumps
+		if not is_dashing:
+			can_dash = true
 	
 	match state:
 		IDLE:
@@ -59,6 +70,8 @@ func _physics_process(delta):
 					state = RUN
 				if jump_timer.time_left > 0 and jumps_left > 0:
 					state = JUMP
+				if velocity.y > 0 and not is_on_floor():
+					state = FALL
 		
 		RUN:
 			animation.play("run")
@@ -66,6 +79,8 @@ func _physics_process(delta):
 				move(move)
 				if move == 0:
 					state = IDLE
+				if Input.is_action_just_pressed("ui_dash") and can_dash and move != 0:
+					state = DASH
 				if !is_on_floor():
 					jumps_left = 0
 					state = FALL
@@ -86,6 +101,8 @@ func _physics_process(delta):
 					state = FALL
 				if jump_timer.time_left > 0 and jumps_left > 0:
 					state = JUMP
+				if Input.is_action_just_pressed("ui_dash") and can_dash and move != 0:
+					state = DASH
 		
 		FALL:
 			animation.play("fall")
@@ -97,21 +114,34 @@ func _physics_process(delta):
 				if jump_timer.time_left > 0 and jumps_left > 0:
 					is_jumping = false
 					state = JUMP
+				if Input.is_action_just_pressed("ui_dash") and can_dash and move != 0:
+					state = DASH
 			
 		LAND:
 			animation.play("land")
-			is_jumping = false
-			jumps_left = max_jumps
 			if can_move:
 				move(move)
 				if move == 0:
 					velocity.x = 0
 				if jump_timer.time_left > 0 and is_on_floor():
 					state = JUMP
+				if Input.is_action_just_pressed("ui_dash") and can_dash and move != 0:
+					state = DASH
+
+		DASH:
+			if can_move and not is_dashing:
+				velocity.y = 0
+				can_dash = false
+				is_dashing = true
+				dash_timer.start(dash_time)
+				if walk_right:
+					velocity.x = speed_dash_side
+				if walk_left:
+					velocity.x = -speed_dash_side
 	
-	if facing_right and walk_left and not walk_right:
+	if facing_right and walk_left and not walk_right and not is_dashing:
 		flip()
-	elif not facing_right and walk_right and not walk_left:
+	elif not facing_right and walk_right and not walk_left and not is_dashing:
 		flip()
 	
 	velocity = move_and_slide(velocity, Vector2(0, -1))
@@ -121,13 +151,14 @@ func flip():
 	scale.x *= -1
 
 func move(move):
-	if move > 0:
-		velocity.x = SPEED
-	elif move < 0:
-		velocity.x = -SPEED
-	else:
-		var vel = Vector2(0, velocity.y)
-		velocity = velocity.move_toward(vel, SPEED)
+	if not is_dashing:
+		if move > 0:
+			velocity.x = SPEED
+		elif move < 0:
+			velocity.x = -SPEED
+		else:
+			var vel = Vector2(0, velocity.y)
+			velocity = velocity.move_toward(vel, SPEED)
 
 func jump(duration):
 	if Input.is_action_just_pressed("ui_jump"):
@@ -155,3 +186,10 @@ func _on_AnimatedSprite_animation_finished():
 
 func _on_MoveTimer_timeout():
 	can_move = true
+
+
+func _on_DashTimer_timeout():
+	velocity = Vector2.ZERO
+	is_dashing = false
+	jumps_left -= 1
+	state = IDLE
