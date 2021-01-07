@@ -11,6 +11,7 @@ export var max_jumps = 1
 
 var jumps_left = max_jumps
 var is_jumping = false
+var was_grounded = false
 
 var unlock_dash = false
 var speed_dash_side = 400
@@ -18,6 +19,8 @@ var speed_dash_up = 300
 var dash_time = 0.2
 var can_dash = true
 var is_dashing = false
+
+var is_flying = false
 
 var velocity = Vector2.ZERO
 
@@ -37,6 +40,7 @@ enum {
 	FALL,
 	LAND,
 	DASH,
+	FLY,
 }
 
 var state = IDLE
@@ -47,9 +51,14 @@ func _ready():
 func _physics_process(delta):
 	var walk_right = Input.get_action_strength("ui_right")
 	var walk_left = Input.get_action_strength("ui_left")
+	var walk_up = Input.get_action_strength("ui_up")
+	var walk_down = Input.get_action_strength("ui_down")
 	var jump_stop = !Input.is_action_pressed("ui_jump")
 	
 	var move = walk_right - walk_left
+	
+	var move_y = walk_up - walk_down
+	
 	
 	if not is_dashing:
 		velocity.y += delta * GRAVITY
@@ -57,9 +66,12 @@ func _physics_process(delta):
 		
 	if is_on_floor():
 		is_jumping = false
+		was_grounded = true
 		jumps_left = max_jumps
 		if not is_dashing:
 			can_dash = true
+	else:
+		coyot_time()
 	
 	match state:
 		IDLE:
@@ -72,6 +84,8 @@ func _physics_process(delta):
 					state = JUMP
 				if velocity.y > 0 and not is_on_floor():
 					state = FALL
+				if Input.is_action_just_pressed("ui_fly"):
+					state = FLY
 		
 		RUN:
 			animation.play("run")
@@ -81,11 +95,13 @@ func _physics_process(delta):
 					state = IDLE
 				if Input.is_action_just_pressed("ui_dash") and can_dash and move != 0:
 					state = DASH
-				if !is_on_floor():
+				if !was_grounded:
 					jumps_left = 0
 					state = FALL
 				if jump_timer.time_left > 0 and jumps_left > 0:
 					state = JUMP
+				if Input.is_action_just_pressed("ui_fly"):
+					state = FLY
 		
 		JUMP:
 			animation.play("jump")
@@ -103,6 +119,8 @@ func _physics_process(delta):
 					state = JUMP
 				if Input.is_action_just_pressed("ui_dash") and can_dash and move != 0:
 					state = DASH
+				if Input.is_action_just_pressed("ui_fly"):
+					state = FLY
 		
 		FALL:
 			animation.play("fall")
@@ -116,6 +134,8 @@ func _physics_process(delta):
 					state = JUMP
 				if Input.is_action_just_pressed("ui_dash") and can_dash and move != 0:
 					state = DASH
+				if Input.is_action_just_pressed("ui_fly"):
+					state = FLY
 			
 		LAND:
 			animation.play("land")
@@ -127,6 +147,8 @@ func _physics_process(delta):
 					state = JUMP
 				if Input.is_action_just_pressed("ui_dash") and can_dash and move != 0:
 					state = DASH
+				if Input.is_action_just_pressed("ui_fly"):
+					state = FLY
 
 		DASH:
 			if can_move and not is_dashing:
@@ -138,6 +160,16 @@ func _physics_process(delta):
 					velocity.x = speed_dash_side
 				if walk_left:
 					velocity.x = -speed_dash_side
+		
+		FLY:
+			if can_move:
+				is_flying = true
+				fly(move, move_y)
+				if Input.is_action_just_pressed("ui_fly"):
+					is_flying = false
+					state = IDLE
+				if Input.is_action_just_pressed("ui_dash") and can_dash and move != 0:
+					state = DASH
 	
 	if facing_right and walk_left and not walk_right and not is_dashing:
 		flip()
@@ -160,6 +192,23 @@ func move(move):
 			var vel = Vector2(0, velocity.y)
 			velocity = velocity.move_toward(vel, SPEED)
 
+func fly(move_x, move_y):
+	if not is_dashing:
+		if move_x > 0:
+			velocity.x = SPEED
+		elif move_x < 0:
+			velocity.x = -SPEED
+		else:
+			var vel = Vector2(0, velocity.y)
+			velocity = velocity.move_toward(vel, SPEED)
+		if move_y > 0:
+			velocity.y = -SPEED
+		elif move_y < 0:
+			velocity.y = SPEED
+		else:
+			var vel = Vector2(velocity.x, 0)
+			velocity = velocity.move_toward(vel, SPEED)
+
 func jump(duration):
 	if Input.is_action_just_pressed("ui_jump"):
 		jump_timer.start(duration)
@@ -177,6 +226,10 @@ func power_up(item_name):
 		max_jumps = 2
 		jumps_left += 1
 
+func coyot_time():
+	yield(get_tree().create_timer(.1), "timeout")
+	was_grounded = false
+
 func _on_AnimatedSprite_animation_finished():
 	if animation.animation == "land":
 		if velocity.x != 0:
@@ -192,4 +245,8 @@ func _on_DashTimer_timeout():
 	velocity = Vector2.ZERO
 	is_dashing = false
 	jumps_left -= 1
-	state = IDLE
+	if !is_flying:
+		state = IDLE
+	else:
+		can_dash = true
+		state = FLY
