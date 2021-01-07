@@ -17,8 +17,7 @@ JUMP_TIME = 0.2
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -8 )
 frames = ExtResource( 1 )
-animation = "land"
-frame = 3
+animation = "fly"
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -34,6 +33,10 @@ autostart = true
 
 [node name="DashTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="CoyotTimer" type="Timer" parent="."]
+one_shot = true
 [connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
 [connection signal="timeout" from="MoveTimer" to="." method="_on_MoveTimer_timeout"]
 [connection signal="timeout" from="DashTimer" to="." method="_on_DashTimer_timeout"]
+[connection signal="timeout" from="CoyotTimer" to="." method="_on_CoyotTimer_timeout"]
