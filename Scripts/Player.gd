@@ -12,6 +12,7 @@ export var max_jumps = 1
 var jumps_left = max_jumps
 var is_jumping = false
 var was_grounded = false
+var is_coyot_run = false
 
 var unlock_dash = false
 var speed_dash_side = 400
@@ -26,6 +27,9 @@ var is_flying = false
 var unlock_invert = false
 var is_invert = false
 
+var unlock_slow = false
+var is_slow_time = false
+
 var velocity = Vector2.ZERO
 
 var facing_right = true
@@ -37,6 +41,7 @@ onready var animation = $AnimatedSprite
 onready var jump_timer = $JumpTimer
 onready var dash_timer = $DashTimer
 onready var coyot_timer = $CoyotTimer
+onready var label = get_parent().get_node("Label")
 
 enum {
 	IDLE,
@@ -71,12 +76,21 @@ func _physics_process(delta):
 		
 	if (!is_invert and is_on_floor()) or (is_invert and is_on_ceiling()):
 		is_jumping = false
+		is_coyot_run = false
 		was_grounded = true
 		jumps_left = max_jumps
 		if not is_dashing:
 			can_dash = true
 	else:
-		coyot_timer.start(.1)
+		if !is_coyot_run:
+			is_coyot_run = true
+			coyot_timer.start(.07)
+	
+	if Input.is_action_just_pressed("ui_slowtime"):
+		if not is_slow_time:
+			slow_down_time()
+		else:
+			restore_time()
 	
 	match state:
 		IDLE:
@@ -247,6 +261,8 @@ func jump(duration):
 		jump_timer.start(duration)
 		
 func death():
+	if is_slow_time:
+		restore_time()
 	var particles = death_particles.instance()
 	get_parent().add_child(particles)
 	particles.global_position = global_position
@@ -265,6 +281,30 @@ func invert():
 	animation.flip_v = !animation.flip_v
 	jumps_left = 0
 	is_invert = !is_invert
+
+func slow_down_time():
+	animation.speed_scale *= 2
+	SPEED *= 2
+	JUMP_FORCE *= 2
+	GRAVITY *= 4
+	speed_dash_side *= 2
+	speed_dash_up *= 2
+	dash_time /= 2
+	is_slow_time = true
+	label.text = "Slow time"
+	Engine.time_scale = 0.5
+
+func restore_time():
+	animation.speed_scale /= 2
+	SPEED /= 2
+	JUMP_FORCE /= 2
+	GRAVITY /= 4
+	speed_dash_side /= 2
+	speed_dash_up /= 2
+	dash_time *= 2
+	is_slow_time = false
+	label.text = "Normal time"
+	Engine.time_scale = 1
 
 func _on_AnimatedSprite_animation_finished():
 	if animation.animation == "land":

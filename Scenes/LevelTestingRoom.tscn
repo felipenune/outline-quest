@@ -10,7 +10,7 @@
 [ext_resource path="res://Scenes/Traps/Spikes.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Scenes/CameraFollow.tscn" type="PackedScene" id=9]
 
-[node name="Level1" type="Node2D"]
+[node name="LevelTestingRoom" type="Node2D"]
 
 [node name="LevelController" parent="." instance=ExtResource( 5 )]
 next_level = ExtResource( 7 )
@@ -97,4 +97,15 @@ visible = false
 position = Vector2( 320, 180 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 68.7568, 92.3208 )
+position = Vector2( 68.7568, 91.3208 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 218.0
+margin_top = 104.0
+margin_right = 258.0
+margin_bottom = 118.0
+custom_colors/font_color = Color( 0.937255, 0.0117647, 0.0117647, 1 )
+text = "Run"
+__meta__ = {
+"_edit_use_anchors_": false
+}
