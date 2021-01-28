@@ -21,9 +21,17 @@ func _process(_delta):
 # warning-ignore:return_value_discarded
 			get_tree().change_scene_to(next_level)
 			
+	debug()
+
 func start_death_timer(duration):
 	death_timer.start(duration)
 
+func debug():
+	if Input.is_action_just_pressed("ui_restart"):
+# warning-ignore:return_value_discarded
+		get_tree().reload_current_scene()
+	if Input.is_action_just_pressed("ui_fullscreen"):
+		OS.window_fullscreen = !OS.window_fullscreen
 
 func _on_DeathTimer_timeout():
 # warning-ignore:return_value_discarded

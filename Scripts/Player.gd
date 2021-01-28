@@ -2,9 +2,11 @@ extends KinematicBody2D
 
 var normal = preload("res://Animations/normal-animation.tres")
 onready var death_particles = preload("res://Scenes/Particles/PlayerDeathParticles.tscn")
+onready var wings = preload("res://Scenes/Wings.tscn")
 
 export var GRAVITY = 1000
 export var SPEED = 200
+export var SPRING_FORCE = -540
 export var JUMP_FORCE = -200
 export var JUMP_TIME = 0.1
 export var max_jumps = 1
@@ -41,6 +43,7 @@ onready var animation = $AnimatedSprite
 onready var jump_timer = $JumpTimer
 onready var dash_timer = $DashTimer
 onready var coyot_timer = $CoyotTimer
+onready var wing_spawner = $WingSpawner
 onready var label = get_parent().get_node("Label")
 
 enum {
@@ -51,6 +54,7 @@ enum {
 	LAND,
 	DASH,
 	FLY,
+	SPRING,
 }
 
 var state = IDLE
@@ -74,7 +78,7 @@ func _physics_process(delta):
 		velocity.y += delta * GRAVITY
 		jump(JUMP_TIME)
 		
-	if (!is_invert and is_on_floor()) or (is_invert and is_on_ceiling()):
+	if (not is_invert and is_on_floor()) or (is_invert and is_on_ceiling()):
 		is_jumping = false
 		is_coyot_run = false
 		was_grounded = true
@@ -82,11 +86,11 @@ func _physics_process(delta):
 		if not is_dashing:
 			can_dash = true
 	else:
-		if !is_coyot_run:
+		if not is_coyot_run:
 			is_coyot_run = true
 			coyot_timer.start(.07)
 	
-	if Input.is_action_just_pressed("ui_slowtime"):
+	if Input.is_action_just_pressed("ui_slowtime") and unlock_slow:
 		if not is_slow_time:
 			slow_down_time()
 		else:
@@ -103,9 +107,9 @@ func _physics_process(delta):
 					state = JUMP
 				if (velocity.y > 0 and not is_on_floor()) or (velocity.y < 0 and not is_on_ceiling()):
 					state = FALL
-				if Input.is_action_just_pressed("ui_fly"):
+				if Input.is_action_just_pressed("ui_fly") and unlock_fly:
 					state = FLY
-				if Input.is_action_just_pressed("ui_invert"):
+				if Input.is_action_just_pressed("ui_invert") and unlock_invert:
 					invert()
 		
 		RUN:
@@ -114,27 +118,27 @@ func _physics_process(delta):
 				move(move)
 				if move == 0:
 					state = IDLE
-				if Input.is_action_just_pressed("ui_dash") and can_dash and move != 0:
+				if Input.is_action_just_pressed("ui_dash") and unlock_dash and can_dash and move != 0:
 					state = DASH
-				if !was_grounded:
+				if not was_grounded:
 					jumps_left = 0
 					state = FALL
 				if jump_timer.time_left > 0 and jumps_left > 0:
 					state = JUMP
-				if Input.is_action_just_pressed("ui_fly"):
+				if Input.is_action_just_pressed("ui_fly") and unlock_fly:
 					state = FLY
-				if Input.is_action_just_pressed("ui_invert"):
+				if Input.is_action_just_pressed("ui_invert") and unlock_invert:
 					invert()
 		
 		JUMP:
 			animation.play("jump")
 			if can_move:
 				move(move)
-				if Input.is_action_pressed("ui_jump") and !is_jumping:
+				if Input.is_action_pressed("ui_jump") and not is_jumping:
 					is_jumping = true
 					jumps_left -= 1
 					velocity.y = JUMP_FORCE
-				if !is_invert:
+				if not is_invert:
 					if jump_stop and velocity.y < 0:
 						velocity.y *= 0.5
 					if velocity.y > 0:
@@ -146,28 +150,28 @@ func _physics_process(delta):
 						state = FALL
 				if jump_timer.time_left > 0 and jumps_left > 0:
 					state = JUMP
-				if Input.is_action_just_pressed("ui_dash") and can_dash and move != 0:
+				if Input.is_action_just_pressed("ui_dash") and unlock_dash and can_dash and move != 0:
 					state = DASH
-				if Input.is_action_just_pressed("ui_fly"):
+				if Input.is_action_just_pressed("ui_fly") and unlock_fly:
 					state = FLY
-				if Input.is_action_just_pressed("ui_invert"):
+				if Input.is_action_just_pressed("ui_invert") and unlock_invert:
 					invert()
 		
 		FALL:
 			animation.play("fall")
 			if can_move:
-				if (!is_invert and is_on_floor()) or (is_invert and is_on_ceiling()):
+				if (not is_invert and is_on_floor()) or (is_invert and is_on_ceiling()):
 					state = LAND
 				else:
 					move(move)
 				if jump_timer.time_left > 0 and jumps_left > 0:
 					is_jumping = false
 					state = JUMP
-				if Input.is_action_just_pressed("ui_dash") and can_dash and move != 0:
+				if Input.is_action_just_pressed("ui_dash") and unlock_dash and can_dash and move != 0:
 					state = DASH
-				if Input.is_action_just_pressed("ui_fly"):
+				if Input.is_action_just_pressed("ui_fly") and unlock_fly:
 					state = FLY
-				if Input.is_action_just_pressed("ui_invert"):
+				if Input.is_action_just_pressed("ui_invert") and unlock_invert:
 					invert()
 			
 		LAND:
@@ -177,13 +181,13 @@ func _physics_process(delta):
 				if move == 0:
 					velocity.x = 0
 				if jump_timer.time_left > 0:
-					if (!is_invert and is_on_floor()) or (is_invert and is_on_ceiling()):
+					if (not is_invert and is_on_floor()) or (is_invert and is_on_ceiling()):
 						state = JUMP
-				if Input.is_action_just_pressed("ui_dash") and can_dash and move != 0:
+				if Input.is_action_just_pressed("ui_dash") and unlock_dash and can_dash and move != 0:
 					state = DASH
-				if Input.is_action_just_pressed("ui_fly"):
+				if Input.is_action_just_pressed("ui_fly") and unlock_fly:
 					state = FLY
-				if Input.is_action_just_pressed("ui_invert"):
+				if Input.is_action_just_pressed("ui_invert") and unlock_invert:
 					invert()
 
 		DASH:
@@ -201,7 +205,9 @@ func _physics_process(delta):
 		FLY:
 			animation.play("fly")
 			if can_move:
-				if !is_flying:
+				if not is_flying:
+					var wings_instance = wings.instance()
+					wing_spawner.add_child(wings_instance)
 					can_dash = true
 					jumps_left = 0
 					if is_on_floor():
@@ -214,16 +220,32 @@ func _physics_process(delta):
 					invert()
 				if Input.is_action_just_pressed("ui_fly"):
 					is_flying = false
+					wing_spawner.get_node("Wings").queue_free()
 					state = IDLE
-				if Input.is_action_just_pressed("ui_dash") and can_dash and move != 0:
+				if Input.is_action_just_pressed("ui_dash") and unlock_dash and can_dash and move != 0:
 					state = DASH
+		
+		SPRING:
+			animation.play("jump")
+			move(move)
+			if (velocity.y > 0 and not is_invert) or (velocity.y < 0 and is_invert):
+				state = FALL
+			if Input.is_action_just_pressed("ui_dash") and unlock_dash and can_dash and move != 0:
+				state = DASH
+			if Input.is_action_just_pressed("ui_fly") and unlock_fly:
+				state = FLY
+			if Input.is_action_just_pressed("ui_invert") and unlock_invert:
+				invert()
 	
 	if facing_right and walk_left and not walk_right and not is_dashing:
 		flip()
 	elif not facing_right and walk_right and not walk_left and not is_dashing:
 		flip()
 	
-	velocity = move_and_slide(velocity, Vector2(0, -1))
+
+	var snap = Vector2.DOWN if not is_jumping else Vector2.ZERO
+
+	velocity = move_and_slide_with_snap(velocity, snap, Vector2(0, -1))
 
 func flip():
 	facing_right = not facing_right
@@ -257,7 +279,7 @@ func fly(move_x, move_y):
 			velocity = velocity.move_toward(vel, SPEED)
 
 func jump(duration):
-	if Input.is_action_just_pressed("ui_jump") and !is_flying:
+	if Input.is_action_just_pressed("ui_jump") and not is_flying:
 		jump_timer.start(duration)
 		
 func death():
@@ -274,6 +296,14 @@ func power_up(item_name):
 	if item_name == "DOUBLE_JUMP":
 		max_jumps = 2
 		jumps_left += 1
+	if item_name == "DASH":
+		unlock_dash = true
+	if item_name == "FLY":
+		unlock_fly = true
+	if item_name == "INVERT_GRAVITY":
+		unlock_invert = true
+	if item_name == "SLOW_TIME":
+		unlock_slow = true
 
 func invert():
 	GRAVITY *= -1
@@ -305,6 +335,11 @@ func restore_time():
 	is_slow_time = false
 	label.text = "Normal time"
 	Engine.time_scale = 1
+	
+func spring():
+	velocity.y = SPRING_FORCE
+	if not is_flying:
+		state = SPRING
 
 func _on_AnimatedSprite_animation_finished():
 	if animation.animation == "land":
@@ -321,7 +356,7 @@ func _on_DashTimer_timeout():
 	velocity = Vector2.ZERO
 	is_dashing = false
 	jumps_left -= 1
-	if !is_flying:
+	if not is_flying:
 		state = IDLE
 	else:
 		can_dash = true
