@@ -1,47 +1,54 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://Sprites/Buttons/button-up.png" type="Texture" id=1]
-[ext_resource path="res://Sprites/Buttons/button-down.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/Misc/Mola.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/AreaBounce.gd" type="Script" id=2]
 [ext_resource path="res://Scripts/Spring.gd" type="Script" id=3]
 
-[sub_resource type="SpriteFrames" id=1]
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 1 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 1 )
+region = Rect2( 32, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 1 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=4]
 animations = [ {
-"frames": [ ExtResource( 1 ) ],
+"frames": [ SubResource( 1 ), SubResource( 2 ) ],
 "loop": false,
 "name": "up",
-"speed": 5.0
+"speed": 16.0
 }, {
-"frames": [ ExtResource( 2 ) ],
+"frames": [ SubResource( 3 ) ],
 "loop": false,
 "name": "down",
 "speed": 5.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 6.03507, 1.58796 )
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 8.01516, 4.03374 )
 
-[node name="Spring" type="StaticBody2D"]
-modulate = Color( 0.219608, 1, 0, 1 )
+[node name="Spring" type="Node2D"]
 z_as_relative = false
-collision_layer = 2
 script = ExtResource( 3 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-frames = SubResource( 1 )
-animation = "up"
+position = Vector2( 0, -8 )
+frames = SubResource( 4 )
+animation = "down"
 playing = true
-centered = false
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-position = Vector2( 0, 1 )
-polygon = PoolVector2Array( 0, 15, 3, 11.5, 13, 11.5, 16, 15 )
 
 [node name="Area2D" type="Area2D" parent="."]
-collision_layer = 2
-collision_mask = 2147483649
+position = Vector2( 0, 1 )
+collision_layer = 2147483656
+collision_mask = 8
+script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( 8.02293, 11.3941 )
-shape = SubResource( 2 )
-[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
-[connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]
+position = Vector2( 0, -5.05197 )
+shape = SubResource( 5 )
+[connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]

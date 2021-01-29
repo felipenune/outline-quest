@@ -40,6 +40,28 @@ one_shot = true
 
 [node name="WingSpawner" type="Position2D" parent="."]
 position = Vector2( -5, -7 )
+
+[node name="BounceRays" type="Node2D" parent="."]
+
+[node name="RayCast2D" type="RayCast2D" parent="BounceRays"]
+position = Vector2( 3, 0 )
+enabled = true
+cast_to = Vector2( 0, 5 )
+collision_mask = 2147483656
+collide_with_areas = true
+
+[node name="RayCast2D2" type="RayCast2D" parent="BounceRays"]
+position = Vector2( -4, 0 )
+enabled = true
+cast_to = Vector2( 0, 5 )
+collision_mask = 8
+collide_with_areas = true
+
+[node name="RayCast2D3" type="RayCast2D" parent="BounceRays"]
+enabled = true
+cast_to = Vector2( 0, 5 )
+collision_mask = 8
+collide_with_areas = true
 [connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
 [connection signal="timeout" from="MoveTimer" to="." method="_on_MoveTimer_timeout"]
 [connection signal="timeout" from="DashTimer" to="." method="_on_DashTimer_timeout"]

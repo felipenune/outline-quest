@@ -1,0 +1,55 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Sprites/Traps/Lança.png" type="Texture" id=1]
+[ext_resource path="res://Scripts/Spears.gd" type="Script" id=2]
+
+[sub_resource type="Animation" id=1]
+resource_name = "default"
+length = 2.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2, 2.2, 2.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5, 6, 5, 4, 3, 2, 1, 0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CollisionPolygon2D:polygon")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4, 0.6, 0.8, 1, 1.2, 1.4, 1.6, 1.8, 2, 2.2, 2.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ PoolVector2Array( 1.20104, 14.8783, 2.46381, 8.49428, 3.44596, 6.1792, 4.56842, 8.56444, 6.04165, 14.9484 ), PoolVector2Array( 1.20104, 14.8783, 2.18319, 4.3552, 3.51611, 2.11028, 4.70873, 4.2149, 6.04165, 14.9484 ), PoolVector2Array( 1.20104, 14.8783, 1.20103, 3.16258, 2.3235, 0.637039, 3.44596, -1.81835, 4.70873, 0.637039, 5.76104, 3.23273, 6.04165, 14.9484 ), PoolVector2Array( 1.20104, 14.8783, 1.20103, -2.44973, 2.3235, -4.27373, 3.51611, -6.58881, 4.63858, -4.27373, 5.76104, -2.37958, 6.04165, 14.9484 ), PoolVector2Array( 1.20104, 14.8783, 1.20103, -8.2725, 2.3235, -10.307, 3.51611, -12.622, 4.63858, -10.307, 5.76104, -8.1322, 6.04165, 14.9484 ), PoolVector2Array( 1.20104, 14.8783, 1.20103, -13.1833, 2.3235, -15.0774, 3.51611, -17.603, 4.63858, -15.1476, 5.76104, -13.1131, 6.04165, 14.9484 ), PoolVector2Array( 1.20104, 14.8783, 1.20103, -18.1642, 2.3235, -20.2688, 3.51611, -22.654, 4.63858, -20.2688, 5.76104, -18.094, 6.04165, 14.9484 ), PoolVector2Array( 1.20104, 14.8783, 1.20103, -13.1833, 2.3235, -15.0774, 3.51611, -17.603, 4.63858, -15.1476, 5.76104, -13.1131, 6.04165, 14.9484 ), PoolVector2Array( 1.20104, 14.8783, 1.20103, -8.2725, 2.3235, -10.307, 3.51611, -12.622, 4.63858, -10.307, 5.76104, -8.1322, 6.04165, 14.9484 ), PoolVector2Array( 1.20104, 14.8783, 1.20103, -2.44973, 2.3235, -4.27373, 3.51611, -6.58881, 4.63858, -4.27373, 5.76104, -2.37958, 6.04165, 14.9484 ), PoolVector2Array( 1.20104, 14.8783, 1.20103, 3.16258, 2.3235, 0.637039, 3.44596, -1.81835, 4.70873, 0.637039, 5.76104, 3.23273, 6.04165, 14.9484 ), PoolVector2Array( 1.20104, 14.8783, 2.18319, 4.3552, 3.51611, 2.11028, 4.70873, 4.2149, 6.04165, 14.9484 ), PoolVector2Array( 1.20104, 14.8783, 2.46381, 8.49428, 3.44596, 6.1792, 4.56842, 8.56444, 6.04165, 14.9484 ) ]
+}
+
+[node name="Spears" type="Area2D"]
+collision_layer = 4
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+modulate = Color( 1, 0, 0, 1 )
+position = Vector2( -1, -20 )
+texture = ExtResource( 1 )
+hframes = 7
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2( -4, -16 )
+polygon = PoolVector2Array( 1.20104, 14.8783, 2.46381, 8.49428, 3.44596, 6.1792, 4.56842, 8.56444, 6.04165, 14.9484 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+playback_speed = 5.0
+anims/default = SubResource( 1 )
+
+[node name="Cooldown" type="Timer" parent="."]
+[connection signal="body_entered" from="." to="." method="_on_Spears_body_entered"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+[connection signal="timeout" from="Cooldown" to="." method="_on_Cooldown_timeout"]

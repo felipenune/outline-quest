@@ -44,6 +44,7 @@ onready var jump_timer = $JumpTimer
 onready var dash_timer = $DashTimer
 onready var coyot_timer = $CoyotTimer
 onready var wing_spawner = $WingSpawner
+onready var bounce_rays = $BounceRays
 onready var label = get_parent().get_node("Label")
 
 enum {
@@ -73,6 +74,7 @@ func _physics_process(delta):
 	
 	var move_y = walk_up - walk_down
 	
+	check_bounce(delta)
 	
 	if not is_dashing:
 		velocity.y += delta * GRAVITY
@@ -316,6 +318,7 @@ func slow_down_time():
 	animation.speed_scale *= 2
 	SPEED *= 2
 	JUMP_FORCE *= 2
+	SPRING_FORCE *= 2
 	GRAVITY *= 4
 	speed_dash_side *= 2
 	speed_dash_up *= 2
@@ -328,6 +331,7 @@ func restore_time():
 	animation.speed_scale /= 2
 	SPEED /= 2
 	JUMP_FORCE /= 2
+	SPRING_FORCE /= 2
 	GRAVITY /= 4
 	speed_dash_side /= 2
 	speed_dash_up /= 2
@@ -335,11 +339,20 @@ func restore_time():
 	is_slow_time = false
 	label.text = "Normal time"
 	Engine.time_scale = 1
+
+func check_bounce(delta):
+	if velocity.y > 0 and not is_flying:
+		for raycast in bounce_rays.get_children():
+			raycast.cast_to = Vector2.DOWN * velocity * delta + Vector2.DOWN
+			raycast.force_raycast_update() 
+			if raycast.is_colliding() and raycast.get_collision_normal() == Vector2.UP:
+				velocity.y = (raycast.get_collision_point() - raycast.global_position - Vector2.DOWN).y / delta
+				raycast.get_collider().entity.call_deferred("bounce", self)
+				break
 	
 func spring():
 	velocity.y = SPRING_FORCE
-	if not is_flying:
-		state = SPRING
+	state = SPRING
 
 func _on_AnimatedSprite_animation_finished():
 	if animation.animation == "land":

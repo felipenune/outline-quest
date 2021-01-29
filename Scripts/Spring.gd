@@ -1,11 +1,13 @@
-extends StaticBody2D
+extends Node2D
 
 onready var animation = $AnimatedSprite
 
-func _on_Area2D_body_entered(body):
-	body.spring()
-	animation.play("down")
+func bounce(bouncer):
+	if bouncer.has_method("spring"):
+		bouncer.spring()
+		animation.play("up")
 
 
-func _on_Area2D_body_exited(_body):
-	animation.play("up")
+func _on_AnimatedSprite_animation_finished():
+	if animation.animation == "up":
+		animation.play("down")
