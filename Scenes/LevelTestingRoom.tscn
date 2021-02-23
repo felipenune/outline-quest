@@ -160,12 +160,10 @@ position = Vector2( 272, 288 )
 
 [node name="Spears2" parent="." instance=ExtResource( 12 )]
 position = Vector2( 144, 112 )
-cooldown_time = 1.0
 
 [node name="Spears3" parent="." instance=ExtResource( 12 )]
 position = Vector2( 128, 48 )
 rotation = 3.14159
 start_time = 2.0
-cooldown_time = 1.0
 
 [editable path="PlatformCastle"]

@@ -1,11 +1,16 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Sprites/Platforms/platform-castle.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 23.9514, 8.05484 )
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Curve2D" id=2]
+_data = {
+"points": PoolVector2Array(  )
+}
+
+[sub_resource type="Animation" id=3]
 resource_name = "loop"
 loop = true
 tracks/0/type = "value"
@@ -21,8 +26,7 @@ tracks/0/keys = {
 "values": [ 0.0, 1.0 ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "pingpong"
+[sub_resource type="Animation" id=4]
 length = 2.0
 loop = true
 tracks/0/type = "value"
@@ -51,6 +55,7 @@ shape = SubResource( 1 )
 one_way_collision = true
 
 [node name="Path2D" type="Path2D" parent="."]
+curve = SubResource( 2 )
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
 offset = 607.433
@@ -63,5 +68,5 @@ remote_path = NodePath("../../../Platform")
 autoplay = "pingpong"
 playback_process_mode = 0
 playback_speed = 0.5
-anims/loop = SubResource( 4 )
-anims/pingpong = SubResource( 3 )
+anims/loop = SubResource( 3 )
+anims/pingpong = SubResource( 4 )

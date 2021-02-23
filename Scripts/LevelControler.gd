@@ -14,6 +14,13 @@ var on_door = false
 func _ready():
 	on_door = false
 	current_keys = 0
+	GameManager.current_level = current_level
+	
+	if current_level > GameManager.last_unlocked_level:
+		GameManager.last_unlocked_level = current_level
+	
+	GameManager.update_data()
+	GameManager.save_game()
 
 func _process(_delta):
 	if on_door:

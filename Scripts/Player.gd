@@ -324,7 +324,8 @@ func slow_down_time():
 	speed_dash_up *= 2
 	dash_time /= 2
 	is_slow_time = true
-	label.text = "Slow time"
+	if label != null:
+		label.text = "Slow time"
 	Engine.time_scale = 0.5
 
 func restore_time():
@@ -337,7 +338,8 @@ func restore_time():
 	speed_dash_up /= 2
 	dash_time *= 2
 	is_slow_time = false
-	label.text = "Normal time"
+	if label != null:
+		label.text = "Normal time"
 	Engine.time_scale = 1
 
 func check_bounce(delta):

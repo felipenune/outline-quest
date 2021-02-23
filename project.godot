@@ -19,6 +19,10 @@ config/name="outline-quest"
 run/main_scene="res://Scenes/LevelTestingRoom.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+GameManager="*res://Scenes/GameManager.tscn"
+
 [display]
 
 window/size/width=640
