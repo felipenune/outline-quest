@@ -41,5 +41,6 @@ func debug():
 		OS.window_fullscreen = !OS.window_fullscreen
 
 func _on_DeathTimer_timeout():
+	GameManager.deaths += 1
 # warning-ignore:return_value_discarded
 	get_tree().reload_current_scene()

@@ -118,17 +118,6 @@ position = Vector2( 1160, 288 )
 visible = false
 position = Vector2( 320, 180 )
 
-[node name="Label" type="Label" parent="."]
-margin_left = 218.0
-margin_top = 104.0
-margin_right = 258.0
-margin_bottom = 118.0
-custom_colors/font_color = Color( 0.937255, 0.0117647, 0.0117647, 1 )
-text = "Normal Time"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="FlyItem" parent="." instance=ExtResource( 13 )]
 position = Vector2( 32, 32 )
 
