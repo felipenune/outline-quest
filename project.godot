@@ -17,7 +17,12 @@ _global_script_class_icons={
 
 config/name="outline-quest"
 run/main_scene="res://Scenes/LevelTestingRoom.tscn"
+config/use_custom_user_dir=true
 config/icon="res://icon.png"
+
+[autoload]
+
+GameManager="*res://Scenes/GameManager.tscn"
 
 [display]
 

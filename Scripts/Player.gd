@@ -45,7 +45,6 @@ onready var dash_timer = $DashTimer
 onready var coyot_timer = $CoyotTimer
 onready var wing_spawner = $WingSpawner
 onready var bounce_rays = $BounceRays
-onready var label = get_parent().get_node("Label")
 
 enum {
 	IDLE,
@@ -324,7 +323,6 @@ func slow_down_time():
 	speed_dash_up *= 2
 	dash_time /= 2
 	is_slow_time = true
-	label.text = "Slow time"
 	Engine.time_scale = 0.5
 
 func restore_time():
@@ -337,7 +335,6 @@ func restore_time():
 	speed_dash_up /= 2
 	dash_time *= 2
 	is_slow_time = false
-	label.text = "Normal time"
 	Engine.time_scale = 1
 
 func check_bounce(delta):

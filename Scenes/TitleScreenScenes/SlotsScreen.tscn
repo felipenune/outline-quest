@@ -1,0 +1,116 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Fonts/ka1.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Fonts/playfont_22.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Scripts/SlotsScreen.gd" type="Script" id=3]
+[ext_resource path="res://icon.png" type="Texture" id=4]
+[ext_resource path="res://Fonts/PressStart2P-Regular.ttf" type="DynamicFontData" id=5]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+outline_size = 1
+outline_color = Color( 0.484863, 0.465923, 0.465923, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 5
+font_data = ExtResource( 5 )
+
+[node name="SlotsScreen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Menu" type="VBoxContainer" parent="."]
+margin_left = 60.0
+margin_top = 40.0
+margin_right = 580.0
+margin_bottom = 320.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Menu"]
+margin_right = 520.0
+margin_bottom = 29.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Select one slot to save[/center]"
+text = "Select one slot to save"
+fit_content_height = true
+
+[node name="CenterRow" type="HBoxContainer" parent="Menu"]
+margin_top = 33.0
+margin_right = 520.0
+margin_bottom = 280.0
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Slots" type="VBoxContainer" parent="Menu/CenterRow"]
+margin_left = 194.0
+margin_right = 326.0
+margin_bottom = 247.0
+size_flags_horizontal = 0
+custom_constants/separation = 22
+alignment = 1
+
+[node name="slot1" type="Button" parent="Menu/CenterRow/Slots"]
+margin_top = 62.0
+margin_right = 132.0
+margin_bottom = 88.0
+custom_fonts/font = ExtResource( 2 )
+text = "slot 1"
+flat = true
+
+[node name="slot2" type="Button" parent="Menu/CenterRow/Slots"]
+margin_top = 110.0
+margin_right = 132.0
+margin_bottom = 136.0
+custom_fonts/font = ExtResource( 2 )
+text = "slot 2"
+flat = true
+
+[node name="slot3" type="Button" parent="Menu/CenterRow/Slots"]
+margin_top = 158.0
+margin_right = 132.0
+margin_bottom = 184.0
+custom_fonts/font = ExtResource( 2 )
+text = "slot 3"
+flat = true
+
+[node name="Warning" type="Sprite" parent="."]
+visible = false
+position = Vector2( 315.412, 182.961 )
+scale = Vector2( 6.64, 3.36 )
+texture = ExtResource( 4 )
+
+[node name="OK" type="Button" parent="Warning"]
+margin_left = -22.8211
+margin_top = 4.0088
+margin_right = 8.17885
+margin_bottom = 24.0088
+rect_scale = Vector2( 0.635082, 1.1144 )
+text = "OK"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Cancel" type="Button" parent="Warning"]
+margin_left = 5.57848
+margin_top = 4.00878
+margin_right = 47.5785
+margin_bottom = 24.0088
+rect_scale = Vector2( 0.530427, 1.05368 )
+custom_fonts/font = SubResource( 2 )
+text = "Cancel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="Menu/CenterRow/Slots/slot1" to="." method="_on_slot1_pressed"]
+[connection signal="pressed" from="Menu/CenterRow/Slots/slot2" to="." method="_on_slot2_pressed"]
+[connection signal="pressed" from="Menu/CenterRow/Slots/slot3" to="." method="_on_slot3_pressed"]
+[connection signal="pressed" from="Warning/OK" to="." method="_on_OK_pressed"]
+[connection signal="pressed" from="Warning/Cancel" to="." method="_on_Cancel_pressed"]
