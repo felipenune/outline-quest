@@ -119,7 +119,7 @@ visible = false
 position = Vector2( 320, 180 )
 
 [node name="FlyItem" parent="." instance=ExtResource( 13 )]
-position = Vector2( 32, 32 )
+position = Vector2( 113.317, 89.2757 )
 
 [node name="PlatformCastle" parent="." instance=ExtResource( 10 )]
 position = Vector2( 104, 552 )

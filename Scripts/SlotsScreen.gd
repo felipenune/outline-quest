@@ -21,7 +21,7 @@ func _ready():
 func new_game(slot):
 	GameManager.new_game(slot)
 	# warning-ignore:return_value_discarded
-	get_tree().change_scene('res://Scenes/LevelsScenes/Level1.tscn')
+	get_tree().change_scene('res://Scenes/TitleScreenScenes/CharsScreen.tscn')
 	
 func next_screen(slot, file_exist):
 	selected_slot = slot

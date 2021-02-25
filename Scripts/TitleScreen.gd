@@ -1,5 +1,12 @@
 extends Control
 
+onready var continue_button = $Menu/CenterRow/Buttons/ContinueButton
+
+func _ready():
+	GameManager.check_slots()
+	if !GameManager.file1 and !GameManager.file2 and !GameManager.file3:
+		continue_button.disabled = true
+
 func next_screen(state):
 	GameManager.slot_screen_state = state
 	# warning-ignore:return_value_discarded

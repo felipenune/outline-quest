@@ -18,6 +18,14 @@ var checkpoint = 1
 
 var game_data: Dictionary
 
+var char_choosed = NORMAL
+
+enum {
+	NORMAL,
+	GLASS,
+	PIRATE,
+}
+
 func _ready():
 	update_data()
 

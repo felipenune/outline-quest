@@ -1,6 +1,9 @@
 extends KinematicBody2D
 
 var normal = preload("res://Animations/normal-animation.tres")
+var glass = preload("res://Animations/glass-animation.tres")
+var pirate = preload("res://Animations/pirate-animation.tres")
+
 onready var death_particles = preload("res://Scenes/Particles/PlayerDeathParticles.tscn")
 onready var wings = preload("res://Scenes/Wings.tscn")
 
@@ -60,7 +63,7 @@ enum {
 var state = IDLE
 
 func _ready():
-	animation.frames = normal
+	choose_char()
 
 func _physics_process(delta):
 	var walk_right = Input.get_action_strength("ui_right")
@@ -351,6 +354,15 @@ func spring():
 	velocity.y = SPRING_FORCE
 	state = SPRING
 
+func choose_char():
+	match GameManager.char_choosed:
+		GameManager.NORMAL:
+			animation.frames = normal
+		GameManager.GLASS:
+			animation.frames = glass
+		GameManager.PIRATE:
+			animation.frames = pirate
+
 func _on_AnimatedSprite_animation_finished():
 	if animation.animation == "land":
 		if velocity.x != 0:
@@ -371,7 +383,6 @@ func _on_DashTimer_timeout():
 	else:
 		can_dash = true
 		state = FLY
-
 
 func _on_CoyotTimer_timeout():
 	was_grounded = false
