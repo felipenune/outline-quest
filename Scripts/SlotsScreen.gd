@@ -2,6 +2,8 @@ extends Control
 
 var selected_slot = "1"
 
+export var next_scene: PackedScene
+
 onready var warning = $Warning
 
 onready var title = $Menu/RichTextLabel
@@ -21,7 +23,7 @@ func _ready():
 func new_game(slot):
 	GameManager.new_game(slot)
 	# warning-ignore:return_value_discarded
-	get_tree().change_scene('res://Scenes/TitleScreenScenes/CharsScreen.tscn')
+	get_tree().change_scene_to(next_scene)
 	
 func next_screen(slot, file_exist):
 	selected_slot = slot
@@ -33,7 +35,7 @@ func next_screen(slot, file_exist):
 	elif GameManager.slot_screen_state == "load_game":
 		GameManager.load_game(slot)
 		# warning-ignore:return_value_discarded
-		get_tree().change_scene('res://Scenes/LevelsScenes/Level' + str(GameManager.current_level) + '.tscn')
+		get_tree().change_scene_to(next_scene)
 
 func disable_slots():
 	if !GameManager.file1:

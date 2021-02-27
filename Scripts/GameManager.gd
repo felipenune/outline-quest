@@ -14,6 +14,7 @@ var save_path = SAVE_DIR + "game"+selected_slot+".dat"
 var current_level = 1
 var last_unlocked_level = 1
 var deaths = 0
+var pencils = 0
 var checkpoint = 1
 
 var game_data: Dictionary
@@ -35,7 +36,8 @@ func update_data():
 			"current_level": current_level,
 			"last_unlock_level": last_unlocked_level,
 			"checkpoint": checkpoint,
-			"deaths": deaths
+			"deaths": deaths,
+			"pencils": pencils
 		}
 	}
 	
@@ -45,6 +47,7 @@ func update_loaded_data():
 	current_level = player_data["current_level"]
 	last_unlocked_level = player_data["last_unlock_level"]
 	deaths = player_data["deaths"]
+	pencils = player_data["pencils"]
 	checkpoint = player_data["checkpoint"]
 
 func save_game():
@@ -77,6 +80,7 @@ func new_game(slot):
 	current_level = 1
 	last_unlocked_level = 1
 	deaths = 0
+	pencils = 0
 	checkpoint = 1
 	save_game()
 	

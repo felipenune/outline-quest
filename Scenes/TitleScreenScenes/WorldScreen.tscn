@@ -1,0 +1,60 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Fonts/ka1.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Fonts/PressStart2P-Regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Scripts/WorldScreen.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/LevelsSelectionScene/LevelsScreen1.tscn" type="PackedScene" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+outline_size = 1
+outline_color = Color( 0.484863, 0.465923, 0.465923, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 29
+font_data = ExtResource( 2 )
+
+[node name="WorldScreen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+levels = [ ExtResource( 4 ) ]
+
+[node name="Menu" type="VBoxContainer" parent="."]
+margin_left = 60.0
+margin_top = 40.0
+margin_right = 580.0
+margin_bottom = 320.0
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Menu"]
+margin_right = 520.0
+margin_bottom = 29.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Select a character[/center]"
+text = "Select a character"
+fit_content_height = true
+
+[node name="CenterRow" type="VBoxContainer" parent="Menu"]
+margin_top = 33.0
+margin_right = 520.0
+margin_bottom = 280.0
+size_flags_vertical = 3
+alignment = 2
+
+[node name="WorldButton" type="Button" parent="Menu/CenterRow"]
+margin_right = 520.0
+margin_bottom = 247.0
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 2 )
+text = "World"
+flat = true
+[connection signal="pressed" from="Menu/CenterRow/WorldButton" to="." method="_on_WorldButton_pressed"]

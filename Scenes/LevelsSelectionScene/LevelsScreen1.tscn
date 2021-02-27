@@ -1,0 +1,148 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Scenes/LevelsScenes/Level6.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/LevelsScenes/Level5.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/LevelsScenes/Level4.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/LevelsScenes/Level3.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/LevelsScenes/Level1.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/LevelsScenes/Level2.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scripts/LevelsScreen.gd" type="Script" id=7]
+[ext_resource path="res://Fonts/ka1.ttf" type="DynamicFontData" id=8]
+[ext_resource path="res://Scripts/LevelButtonsCheck.gd" type="Script" id=9]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+outline_size = 1
+outline_color = Color( 0.484863, 0.465923, 0.465923, 1 )
+font_data = ExtResource( 8 )
+
+[node name="LevelsScreens1" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+levels = [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 4 ), ExtResource( 3 ), ExtResource( 2 ), ExtResource( 1 ) ]
+
+[node name="Menu" type="VBoxContainer" parent="."]
+margin_left = 60.0
+margin_top = 40.0
+margin_right = 580.0
+margin_bottom = 320.0
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Menu"]
+margin_right = 520.0
+margin_bottom = 29.0
+custom_fonts/normal_font = SubResource( 1 )
+bbcode_enabled = true
+bbcode_text = "[center]Select the level[/center]"
+text = "Select the level"
+fit_content_height = true
+
+[node name="CenterRow" type="VBoxContainer" parent="Menu"]
+margin_top = 33.0
+margin_right = 520.0
+margin_bottom = 280.0
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Levels" type="HBoxContainer" parent="Menu/CenterRow"]
+margin_top = 101.0
+margin_right = 418.0
+margin_bottom = 121.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_constants/separation = 22
+alignment = 1
+
+[node name="Level1" type="Button" parent="Menu/CenterRow/Levels"]
+margin_right = 66.0
+margin_bottom = 20.0
+text = "Level 01"
+script = ExtResource( 9 )
+
+[node name="Level2" type="Button" parent="Menu/CenterRow/Levels"]
+margin_left = 88.0
+margin_right = 154.0
+margin_bottom = 20.0
+text = "Level 02"
+script = ExtResource( 9 )
+
+[node name="Level3" type="Button" parent="Menu/CenterRow/Levels"]
+margin_left = 176.0
+margin_right = 242.0
+margin_bottom = 20.0
+text = "Level 03"
+script = ExtResource( 9 )
+
+[node name="Level4" type="Button" parent="Menu/CenterRow/Levels"]
+margin_left = 264.0
+margin_right = 330.0
+margin_bottom = 20.0
+text = "Level 04"
+script = ExtResource( 9 )
+
+[node name="Level5" type="Button" parent="Menu/CenterRow/Levels"]
+margin_left = 352.0
+margin_right = 418.0
+margin_bottom = 20.0
+text = "Level 05"
+script = ExtResource( 9 )
+
+[node name="Levels2" type="HBoxContainer" parent="Menu/CenterRow"]
+margin_top = 125.0
+margin_right = 418.0
+margin_bottom = 145.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_constants/separation = 22
+alignment = 1
+
+[node name="Level6" type="Button" parent="Menu/CenterRow/Levels2"]
+margin_right = 66.0
+margin_bottom = 20.0
+text = "Level 06"
+script = ExtResource( 9 )
+
+[node name="Level7" type="Button" parent="Menu/CenterRow/Levels2"]
+margin_left = 88.0
+margin_right = 154.0
+margin_bottom = 20.0
+text = "Level 07"
+script = ExtResource( 9 )
+
+[node name="Level8" type="Button" parent="Menu/CenterRow/Levels2"]
+margin_left = 176.0
+margin_right = 242.0
+margin_bottom = 20.0
+text = "Level 08"
+script = ExtResource( 9 )
+
+[node name="Level9" type="Button" parent="Menu/CenterRow/Levels2"]
+margin_left = 264.0
+margin_right = 330.0
+margin_bottom = 20.0
+text = "Level 09"
+script = ExtResource( 9 )
+
+[node name="Level10" type="Button" parent="Menu/CenterRow/Levels2"]
+margin_left = 352.0
+margin_right = 418.0
+margin_bottom = 20.0
+text = "Level 10"
+script = ExtResource( 9 )
+[connection signal="pressed" from="Menu/CenterRow/Levels/Level1" to="." method="_on_Level1_pressed"]
+[connection signal="pressed" from="Menu/CenterRow/Levels/Level2" to="." method="_on_Level2_pressed"]
+[connection signal="pressed" from="Menu/CenterRow/Levels/Level3" to="." method="_on_Level3_pressed"]
+[connection signal="pressed" from="Menu/CenterRow/Levels/Level4" to="." method="_on_Level4_pressed"]
+[connection signal="pressed" from="Menu/CenterRow/Levels/Level5" to="." method="_on_Level5_pressed"]
+[connection signal="pressed" from="Menu/CenterRow/Levels2/Level6" to="." method="_on_Level6_pressed"]
+[connection signal="pressed" from="Menu/CenterRow/Levels2/Level7" to="." method="_on_Level7_pressed"]
+[connection signal="pressed" from="Menu/CenterRow/Levels2/Level8" to="." method="_on_Level8_pressed"]
+[connection signal="pressed" from="Menu/CenterRow/Levels2/Level9" to="." method="_on_Level9_pressed"]
+[connection signal="pressed" from="Menu/CenterRow/Levels2/Level10" to="." method="_on_Level10_pressed"]

@@ -11,21 +11,21 @@ func _ready():
 	pass # Replace with function body.
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func go_to_worlds():
+# warning-ignore:return_value_discarded
+	get_tree().change_scene('res://Scenes/TitleScreenScenes/WorldScreen.tscn')
 
 
 func _on_Normal_pressed():
 	GameManager.char_choosed = GameManager.NORMAL
-	get_tree().change_scene('res://Scenes/LevelsScenes/Level1.tscn')
+	go_to_worlds()
 
 
 func _on_Glass_pressed():
 	GameManager.char_choosed = GameManager.GLASS
-	get_tree().change_scene('res://Scenes/LevelsScenes/Level1.tscn')
+	go_to_worlds()
 
 
 func _on_Pirate_pressed():
 	GameManager.char_choosed = GameManager.PIRATE
-	get_tree().change_scene('res://Scenes/LevelsScenes/Level1.tscn')
+	go_to_worlds()
