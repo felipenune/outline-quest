@@ -11,6 +11,8 @@ onready var death_timer = $DeathTimer
 
 var on_door = false
 
+var pencil = false
+
 func _ready():
 	on_door = false
 	current_keys = 0
@@ -25,6 +27,10 @@ func _ready():
 func _process(_delta):
 	if on_door:
 		if Input.is_action_just_pressed("ui_up"):
+			GameManager.pencil_data["level" + str(current_level)] = pencil
+			print(GameManager.pencil_data["level" + str(current_level)])
+			GameManager.update_data()
+			GameManager.save_game()
 # warning-ignore:return_value_discarded
 			get_tree().change_scene_to(next_level)
 			

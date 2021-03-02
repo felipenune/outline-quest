@@ -19,6 +19,60 @@ var checkpoint = 1
 
 var game_data: Dictionary
 
+var pencil_data: Dictionary = {
+	"level1": false,
+	"level2": false,
+	"level3": false,
+	"level4": false,
+	"level5": false,
+	"level6": false,
+	"level7": false,
+	"level8": false,
+	"level9": false,
+	"level10": false,
+	"level11": false,
+	"level12": false,
+	"level13": false,
+	"level14": false,
+	"level15": false,
+	"level16": false,
+	"level17": false,
+	"level18": false,
+	"level19": false,
+	"level20": false,
+	"level21": false,
+	"level22": false,
+	"level23": false,
+	"level24": false,
+	"level25": false,
+	"level26": false,
+	"level27": false,
+	"level28": false,
+	"level29": false,
+	"level30": false,
+	"level31": false,
+	"level32": false,
+	"level33": false,
+	"level34": false,
+	"level35": false,
+	"level36": false,
+	"level37": false,
+	"level38": false,
+	"level39": false,
+	"level40": false,
+	"level41": false,
+	"level42": false,
+	"level43": false,
+	"level44": false,
+	"level45": false,
+	"level46": false,
+	"level47": false,
+	"level48": false,
+	"level49": false,
+	"level50": false,
+	"gold": false
+}
+
 var char_choosed = NORMAL
 
 enum {
@@ -38,7 +92,9 @@ func update_data():
 			"checkpoint": checkpoint,
 			"deaths": deaths,
 			"pencils": pencils
-		}
+		},
+		
+		"pencil_data": pencil_data
 	}
 	
 func update_loaded_data():
@@ -49,6 +105,7 @@ func update_loaded_data():
 	deaths = player_data["deaths"]
 	pencils = player_data["pencils"]
 	checkpoint = player_data["checkpoint"]
+	pencil_data = game_data["pencil_data"]
 
 func save_game():
 	save_path = SAVE_DIR + "save_slot_" + selected_slot + ".dat"

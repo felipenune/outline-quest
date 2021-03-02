@@ -354,6 +354,9 @@ func spring():
 	velocity.y = SPRING_FORCE
 	state = SPRING
 
+func get_pencil():
+	level_controller.pencil = true
+
 func choose_char():
 	match GameManager.char_choosed:
 		GameManager.NORMAL:
