@@ -11,6 +11,12 @@ func _process(_delta):
 		world += 1
 	if Input.is_action_just_pressed("ui_left") and world > 1:
 		world -= 1
+	if Input.is_action_just_pressed("ui_accept"):
+		go_to_levels()
+	if Input.is_action_just_pressed("ui_cancel"):
+		var back = get_tree().change_scene("res://Scenes/TitleScreenScenes/CharsScreen.tscn")
+		if back != OK:
+			print("Error")
 	
 	world_button.text = "World " + str(world)
 	
@@ -28,6 +34,12 @@ func check_world(last_level):
 	else:
 		world_button.disabled = false
 
+func go_to_levels():
+	if world_button.disabled:
+		return
+	var world_scene = get_tree().change_scene_to(levels[world - 1])
+	if world_scene != OK:
+		print("Error")
+
 func _on_WorldButton_pressed():
-# warning-ignore:return_value_discarded
-	get_tree().change_scene_to(levels[world - 1])
+	go_to_levels()

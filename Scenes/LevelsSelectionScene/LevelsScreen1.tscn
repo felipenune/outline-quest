@@ -8,7 +8,7 @@
 [ext_resource path="res://Scenes/LevelsScenes/Level2.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scripts/LevelsScreen.gd" type="Script" id=7]
 [ext_resource path="res://Fonts/ka1.ttf" type="DynamicFontData" id=8]
-[ext_resource path="res://Scripts/LevelButtonsCheck.gd" type="Script" id=9]
+[ext_resource path="res://Scenes/UIButtons/LevelButton.tscn" type="PackedScene" id=11]
 
 [sub_resource type="DynamicFont" id=1]
 size = 24
@@ -52,90 +52,71 @@ size_flags_vertical = 3
 alignment = 1
 
 [node name="Levels" type="HBoxContainer" parent="Menu/CenterRow"]
-margin_top = 101.0
-margin_right = 418.0
+margin_top = 21.0
+margin_right = 520.0
 margin_bottom = 121.0
-size_flags_horizontal = 0
+rect_min_size = Vector2( 0, 100 )
 size_flags_vertical = 0
 custom_constants/separation = 22
 alignment = 1
 
-[node name="Level1" type="Button" parent="Menu/CenterRow/Levels"]
-margin_right = 66.0
-margin_bottom = 20.0
-text = "Level 01"
-script = ExtResource( 9 )
+[node name="Level1" parent="Menu/CenterRow/Levels" instance=ExtResource( 11 )]
+margin_left = 26.0
+margin_right = 102.0
 
-[node name="Level2" type="Button" parent="Menu/CenterRow/Levels"]
-margin_left = 88.0
-margin_right = 154.0
-margin_bottom = 20.0
+[node name="Level2" parent="Menu/CenterRow/Levels" instance=ExtResource( 11 )]
+margin_left = 124.0
+margin_right = 200.0
 text = "Level 02"
-script = ExtResource( 9 )
 
-[node name="Level3" type="Button" parent="Menu/CenterRow/Levels"]
-margin_left = 176.0
-margin_right = 242.0
-margin_bottom = 20.0
+[node name="Level3" parent="Menu/CenterRow/Levels" instance=ExtResource( 11 )]
+margin_left = 222.0
+margin_right = 298.0
 text = "Level 03"
-script = ExtResource( 9 )
 
-[node name="Level4" type="Button" parent="Menu/CenterRow/Levels"]
-margin_left = 264.0
-margin_right = 330.0
-margin_bottom = 20.0
+[node name="Level4" parent="Menu/CenterRow/Levels" instance=ExtResource( 11 )]
+margin_left = 320.0
+margin_right = 396.0
 text = "Level 04"
-script = ExtResource( 9 )
 
-[node name="Level5" type="Button" parent="Menu/CenterRow/Levels"]
-margin_left = 352.0
-margin_right = 418.0
-margin_bottom = 20.0
+[node name="Level5" parent="Menu/CenterRow/Levels" instance=ExtResource( 11 )]
+margin_left = 418.0
+margin_right = 494.0
 text = "Level 05"
-script = ExtResource( 9 )
 
 [node name="Levels2" type="HBoxContainer" parent="Menu/CenterRow"]
 margin_top = 125.0
-margin_right = 418.0
-margin_bottom = 145.0
-size_flags_horizontal = 0
+margin_right = 520.0
+margin_bottom = 225.0
+rect_min_size = Vector2( 0, 100 )
 size_flags_vertical = 0
 custom_constants/separation = 22
 alignment = 1
 
-[node name="Level6" type="Button" parent="Menu/CenterRow/Levels2"]
-margin_right = 66.0
-margin_bottom = 20.0
+[node name="Level6" parent="Menu/CenterRow/Levels2" instance=ExtResource( 11 )]
+margin_left = 26.0
+margin_right = 102.0
 text = "Level 06"
-script = ExtResource( 9 )
 
-[node name="Level7" type="Button" parent="Menu/CenterRow/Levels2"]
-margin_left = 88.0
-margin_right = 154.0
-margin_bottom = 20.0
+[node name="Level7" parent="Menu/CenterRow/Levels2" instance=ExtResource( 11 )]
+margin_left = 124.0
+margin_right = 200.0
 text = "Level 07"
-script = ExtResource( 9 )
 
-[node name="Level8" type="Button" parent="Menu/CenterRow/Levels2"]
-margin_left = 176.0
-margin_right = 242.0
-margin_bottom = 20.0
+[node name="Level8" parent="Menu/CenterRow/Levels2" instance=ExtResource( 11 )]
+margin_left = 222.0
+margin_right = 298.0
 text = "Level 08"
-script = ExtResource( 9 )
 
-[node name="Level9" type="Button" parent="Menu/CenterRow/Levels2"]
-margin_left = 264.0
-margin_right = 330.0
-margin_bottom = 20.0
+[node name="Level9" parent="Menu/CenterRow/Levels2" instance=ExtResource( 11 )]
+margin_left = 320.0
+margin_right = 396.0
 text = "Level 09"
-script = ExtResource( 9 )
 
-[node name="Level10" type="Button" parent="Menu/CenterRow/Levels2"]
-margin_left = 352.0
-margin_right = 418.0
-margin_bottom = 20.0
+[node name="Level10" parent="Menu/CenterRow/Levels2" instance=ExtResource( 11 )]
+margin_left = 418.0
+margin_right = 494.0
 text = "Level 10"
-script = ExtResource( 9 )
 [connection signal="pressed" from="Menu/CenterRow/Levels/Level1" to="." method="_on_Level1_pressed"]
 [connection signal="pressed" from="Menu/CenterRow/Levels/Level2" to="." method="_on_Level2_pressed"]
 [connection signal="pressed" from="Menu/CenterRow/Levels/Level3" to="." method="_on_Level3_pressed"]

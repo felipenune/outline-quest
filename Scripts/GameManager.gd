@@ -84,6 +84,9 @@ enum {
 func _ready():
 	update_data()
 
+func _process(_delta):
+	debug()
+
 func update_data():
 	game_data = {
 		"player_data": {
@@ -111,8 +114,9 @@ func save_game():
 	save_path = SAVE_DIR + "save_slot_" + selected_slot + ".dat"
 	var dir: Directory = Directory.new()
 	if !dir.dir_exists(SAVE_DIR):
-		# warning-ignore:return_value_discarded
-		dir.make_dir_recursive(SAVE_DIR)
+		var new_dir = dir.make_dir_recursive(SAVE_DIR)
+		if new_dir != OK:
+			print("Error")
 		
 	var file: File = File.new()
 #	var error = file.open_encrypted_with_pass(save_path, File.WRITE, "teste")
@@ -146,3 +150,11 @@ func check_slots():
 	file1 = file.file_exists(SAVE_DIR + "save_slot_1.dat")
 	file2 = file.file_exists(SAVE_DIR + "save_slot_2.dat")
 	file3 = file.file_exists(SAVE_DIR + "save_slot_3.dat")
+	
+func debug():
+	if Input.is_action_just_pressed("ui_restart"):
+		var restart = get_tree().reload_current_scene()
+		if restart != OK:
+			print("Error")
+	if Input.is_action_just_pressed("ui_fullscreen"):
+		OS.window_fullscreen = !OS.window_fullscreen

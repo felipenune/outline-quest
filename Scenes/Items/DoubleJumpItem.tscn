@@ -15,6 +15,7 @@ orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 
 [node name="DoubleJumpItem" type="Node2D"]
+modulate = Color( 1.5, 1.1, 1.5, 1 )
 light_mask = 2049
 script = ExtResource( 2 )
 color1 = Color( 1, 1, 2, 1 )

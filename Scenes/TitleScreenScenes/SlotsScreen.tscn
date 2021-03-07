@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Fonts/ka1.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Fonts/playfont_22.tres" type="DynamicFont" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://icon.png" type="Texture" id=4]
 [ext_resource path="res://Fonts/PressStart2P-Regular.ttf" type="DynamicFontData" id=5]
 [ext_resource path="res://Scenes/TitleScreenScenes/CharsScreen.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/Misc/LabelSelector.tscn" type="PackedScene" id=7]
 
 [sub_resource type="DynamicFont" id=1]
 size = 24
@@ -52,33 +53,54 @@ size_flags_vertical = 3
 alignment = 1
 
 [node name="Slots" type="VBoxContainer" parent="Menu/CenterRow"]
-margin_left = 194.0
-margin_right = 326.0
+margin_left = 182.0
+margin_right = 338.0
 margin_bottom = 247.0
 size_flags_horizontal = 0
 custom_constants/separation = 22
 alignment = 1
 
-[node name="slot1" type="Button" parent="Menu/CenterRow/Slots"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Menu/CenterRow/Slots"]
 margin_top = 62.0
-margin_right = 132.0
+margin_right = 156.0
 margin_bottom = 88.0
+
+[node name="Label" parent="Menu/CenterRow/Slots/HBoxContainer" instance=ExtResource( 7 )]
+
+[node name="slot1" type="Button" parent="Menu/CenterRow/Slots/HBoxContainer"]
+margin_left = 24.0
+margin_right = 156.0
+margin_bottom = 26.0
 custom_fonts/font = ExtResource( 2 )
 text = "slot 1"
 flat = true
 
-[node name="slot2" type="Button" parent="Menu/CenterRow/Slots"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Menu/CenterRow/Slots"]
 margin_top = 110.0
-margin_right = 132.0
+margin_right = 156.0
 margin_bottom = 136.0
+
+[node name="Label2" parent="Menu/CenterRow/Slots/HBoxContainer2" instance=ExtResource( 7 )]
+
+[node name="slot2" type="Button" parent="Menu/CenterRow/Slots/HBoxContainer2"]
+margin_left = 24.0
+margin_right = 156.0
+margin_bottom = 26.0
 custom_fonts/font = ExtResource( 2 )
 text = "slot 2"
 flat = true
 
-[node name="slot3" type="Button" parent="Menu/CenterRow/Slots"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="Menu/CenterRow/Slots"]
 margin_top = 158.0
-margin_right = 132.0
+margin_right = 156.0
 margin_bottom = 184.0
+
+[node name="Label3" parent="Menu/CenterRow/Slots/HBoxContainer3" instance=ExtResource( 7 )]
+
+[node name="slot3" type="Button" parent="Menu/CenterRow/Slots/HBoxContainer3"]
+margin_left = 24.0
+margin_right = 156.0
+margin_bottom = 26.0
 custom_fonts/font = ExtResource( 2 )
 text = "slot 3"
 flat = true
@@ -111,8 +133,8 @@ text = "Cancel"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="pressed" from="Menu/CenterRow/Slots/slot1" to="." method="_on_slot1_pressed"]
-[connection signal="pressed" from="Menu/CenterRow/Slots/slot2" to="." method="_on_slot2_pressed"]
-[connection signal="pressed" from="Menu/CenterRow/Slots/slot3" to="." method="_on_slot3_pressed"]
+[connection signal="pressed" from="Menu/CenterRow/Slots/HBoxContainer/slot1" to="." method="_on_slot1_pressed"]
+[connection signal="pressed" from="Menu/CenterRow/Slots/HBoxContainer2/slot2" to="." method="_on_slot2_pressed"]
+[connection signal="pressed" from="Menu/CenterRow/Slots/HBoxContainer3/slot3" to="." method="_on_slot3_pressed"]
 [connection signal="pressed" from="Warning/OK" to="." method="_on_OK_pressed"]
 [connection signal="pressed" from="Warning/Cancel" to="." method="_on_Cancel_pressed"]

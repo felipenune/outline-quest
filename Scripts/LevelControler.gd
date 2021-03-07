@@ -28,25 +28,17 @@ func _process(_delta):
 	if on_door:
 		if Input.is_action_just_pressed("ui_up"):
 			GameManager.pencil_data["level" + str(current_level)] = pencil
-			print(GameManager.pencil_data["level" + str(current_level)])
 			GameManager.update_data()
 			GameManager.save_game()
-# warning-ignore:return_value_discarded
-			get_tree().change_scene_to(next_level)
-			
-	debug()
+			var next = get_tree().change_scene_to(next_level)
+			if next != OK:
+				print("Error")
 
 func start_death_timer(duration):
 	death_timer.start(duration)
 
-func debug():
-	if Input.is_action_just_pressed("ui_restart"):
-# warning-ignore:return_value_discarded
-		get_tree().reload_current_scene()
-	if Input.is_action_just_pressed("ui_fullscreen"):
-		OS.window_fullscreen = !OS.window_fullscreen
-
 func _on_DeathTimer_timeout():
 	GameManager.deaths += 1
-# warning-ignore:return_value_discarded
-	get_tree().reload_current_scene()
+	var reload = get_tree().reload_current_scene()
+	if reload != OK:
+		print("Error")
